@@ -125,5 +125,5 @@ if submitted:
         bgp = PA * bgp_proteines * facteur_ingesta
         bdp = PA * bdp_proteines * facteur_ingesta
 
-        st.write(f"Besoins caloriques : **{round(kcal_min, 1)}-{round(kcal_max, 1)} kcal/j**")
-        st.write(f"Besoins en protéines : **{round(bgp, 1)}-{round(bdp, 1)} g/j**")
+        st.write(f"Les besoins caloriques sont de **{round(kcal_min, 1)} kcal/j** à **{round(kcal_max, 1)} kcal/j**.")
+        st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")

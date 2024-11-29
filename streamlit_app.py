@@ -157,5 +157,9 @@ if submitted:
         bdp = masse_actuelle * 1.5 * facteur_ingesta
 
     st.write(f"Le patient doit consommer entre **{round(kcal_min)}** et **{round(kcal_max)}** kcal/j")
-    st.write(f"et entre **{round(bgp, 1)}** et **{round(bdp, 1)}** g de protéines/j") 
+
+    if bgp is not None and bdp is not None : 
+        st.write (f"et entre **{round(bgp, 1)}** et **{round(bdp, 1)}** g de protéines/j")
+    else :
+    st.write("Les besoins en protéines ne sont pas calculés en raison du risque élevé de SRI.")
 

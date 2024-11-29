@@ -127,7 +127,7 @@ if submitted :
             return 'Pas de risque de SRI'
 
     # Calcul du risque SRI
-     risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool):
+     risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
      st.write(f"Évaluation du risque de SRI : **{risque_sri}**")
 
     # Besoins nutritionnels

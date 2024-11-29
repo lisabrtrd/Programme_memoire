@@ -127,6 +127,20 @@ if submitted:
 
     # Calcul du risque SRI
     risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
+# Définir les besoins nutritionnels avant le calcul des kcal
+    besoins = {
+        'hospitalisé': (20, 35),
+        'en oncologie médicale': (30, 35),
+        'âgés dénutris': (30, 40),
+        'en neurologie type SLA': (35, 35),
+        'en péri-opératoire': (25, 30),
+        'en réanimation phase aiguë': (20, 25),
+        'réanimation phase anabolique': (25, 30)}
+
+    bgk, bdk = besoins.get(type_patient, (20, 25))  # Utilisez une valeur par défaut si type_patient est inconnu
+
+# Calcul du facteur d'ingesta
+    facteur_ingesta = (1 - ingesta / 100)
 
     if risque_sri != 'Pas de risque de SRI':  # N'affiche que si un risque est détecté
         st.write(f"Évaluation du risque de SRI : **{risque_sri}**")

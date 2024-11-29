@@ -142,7 +142,7 @@ if submitted :
      bgk, bdk = besoins[type_patient]
      facteur_ingesta = (1 - ingesta / 100)
 
-     if risque_sri in ["Risque élevé"]:
+     if risque_sri == ["Risque élevé"]:
         kcal_min, kcal_max = 500, 500  # Restriction calorique à 500 kcal/j
         bgp, bdp = None, None  # Pas de calcul pour les protéines pour le moment
         st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI.")

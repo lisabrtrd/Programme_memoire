@@ -124,7 +124,7 @@ if submitted :
         elif nb_criteres_mineurs >= 2:
             return "Risque élevé (≥ 2 critères mineurs détectés)"
         else:
-            return "Risque faible"
+            return 'Pas de risque de SRI'
 
     # Calcul du risque SRI
      risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
@@ -144,15 +144,19 @@ if submitted :
      bgk, bdk = besoins[type_patient]
      facteur_ingesta = (1 - ingesta / 100)
 
-     if risque_sri in ["Risque élevé (Critère majeur détecté)", "Risque élevé (≥ 2 critères mineurs détectés)"]:
+    risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
+
+    if risque_sri:  # N'affiche que si un risque est détecté
+        st.write(f"Évaluation du risque de SRI : **{risque_sri}**")
+    if risque_sri in ["Risque élevé (Critère majeur détecté)", "Risque élevé (≥ 2 critères mineurs détectés)"]:
         kcal_min, kcal_max = 500, 500  # Restriction calorique à 500 kcal/j
         bgp, bdp = None, None  # Pas de calcul pour les protéines pour le moment
         st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI.")
-     else:
+    else:
         kcal_min = masse_actuelle * bgk * facteur_ingesta
         kcal_max = masse_actuelle * bdk * facteur_ingesta
         bgp = masse_actuelle * 1.2 * facteur_ingesta
         bdp = masse_actuelle * 1.5 * facteur_ingesta
 
-        st.write(f"Le patient doit consommer entre **{round(kcal_min)}** et **{round(kcal_max)}** kcal/j")
-        st.write(f"et entre **{round(bgp, 1)}** et **{round(bdp, 1)}** g de protéines/j")
+    st.write(f"Le patient doit consommer entre **{round(kcal_min)}** et **{round(kcal_max)}** kcal/j")
+    st.write(f"et entre **{round(bgp, 1)}** et **{round(bdp, 1)}** g de protéines/j")

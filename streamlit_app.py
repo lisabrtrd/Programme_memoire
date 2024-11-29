@@ -78,10 +78,8 @@ if submitted:
     st.write(f"IMC du patient : {imc}")
     st.write(f"Perte de poids : {perte}%")
 
-    # Ajoutez des calculs supplémentaires si nécessaire (par exemple, besoins caloriques et en protéines)
-    st.write("Calcul des besoins nutritionnels :")
-
-    # Calcul des besoins nutritionnels basés sur le type de patient
+   
+      # Besoins énergétiques et protéiques selon type de patient
     besoins = {
         'hospitalisé': (20, 35),
         'en oncologie médicale': (30, 35),
@@ -91,16 +89,64 @@ if submitted:
         'en réanimation phase aiguë': (20, 25),
         'réanimation phase anabolique': (25, 30)
     }
-    bgk, bdk = besoins.get(type_patient, (20, 25))  # Utilise une valeur par défaut si type_patient est inconnu
-    facteur_ingesta = (1 - ingesta / 100)  # Facteur d'ajustement en fonction des ingestas
+    
+    besoins_proteines = {
+        'hospitalisé': (1.0, 2.0),
+        'en oncologie médicale': (1.2, 1.5),
+        'âgés dénutris': (1.2, 1.5),
+        'en neurologie type SLA': (1.5, 1.5),
+        'en péri-opératoire': (1.2, 1.5),
+        'en réanimation phase aiguë': (1.2, 1.5),
+        'réanimation phase anabolique': (2.0, 2.5) if imc >= 30 else (1.2, 1.5)
+    }
 
-    kcal_min = masse_actuelle * bgk * facteur_ingesta
-    kcal_max = masse_actuelle * bdk * facteur_ingesta
-    bgp = masse_actuelle * 1.2 * facteur_ingesta
-    bdp = masse_actuelle * 1.5 * facteur_ingesta
+    bgk, bdk = besoins.get(type_patient, (20, 25))  # Besoins énergétiques
+    bgp_proteines, bdp_proteines = besoins_proteines.get(type_patient, (1.2, 1.5))  # Besoins en protéines
 
-    st.write(f"Les besoins caloriques sont de **{round(kcal_min, 1)} kcal/j** à **{round(kcal_max, 1)} kcal/j**.")
-    st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")
+    # Calcul du facteur d'ingesta
+    facteur_ingesta = (1 - ingesta / 100)
+
+    # Évaluation du risque de SRI
+    def sri(imc, perte, temps, ingesta, hypo, alcool):
+        criteres_majeurs = (
+            imc < 16,
+            perte >= 15 and temps <= 6,
+            ingesta < 10 and temps <= 0.33,
+            hypo == 'Oui'
+        )
+        criteres_mineurs = [
+            16 <= imc < 18.5,
+            perte >= 10 and 3 <= temps <= 6,
+            ingesta == 0 and temps <= 0.17,
+            alcool == 'Oui'
+        ]
+
+        risque_crit_majeur = any(criteres_majeurs)
+        nb_criteres_mineurs = sum(criteres_mineurs)
+
+        if risque_crit_majeur:
+            return "Risque élevé (Critère majeur détecté)"
+        elif nb_criteres_mineurs >= 2:
+            return "Risque élevé (≥ 2 critères mineurs détectés)"
+        else:
+            return 'Pas de risque de SRI'
+
+    risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
+
+    if risque_sri != 'Pas de risque de SRI':  # N'affiche que si un risque est détecté
+        st.write(f"Évaluation du risque de SRI : **{risque_sri}**")
+        if risque_sri in ["Risque élevé (Critère majeur détecté)", "Risque élevé (≥ 2 critères mineurs détectés)"]:
+            st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI.")
+            kcal_min, kcal_max = 500, 500
+            bgp, bdp = None, None
+    else:
+        kcal_min = PA * bgk * facteur_ingesta
+        kcal_max = PA * bdk * facteur_ingesta
+        bgp = PA * bgp_proteines * facteur_ingesta
+        bdp = PA * bdp_proteines * facteur_ingesta
+
+        st.write(f"Les besoins caloriques sont de **{round(kcal_min, 1)} kcal/j** à **{round(kcal_max, 1)} kcal/j**.")
+        st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")
 
 
 

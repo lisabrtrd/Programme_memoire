@@ -9,6 +9,27 @@ def IMC(masse_actuelle, taille):
 def perte_de_masse(masse_avant, masse_actuelle):
     return round(((masse_avant - masse_actuelle) / masse_avant) * 100)
 
+def evaluer_sri(imc, perte, temps, ingesta, hypo, alcool):
+    criteres_majeurs = (
+        imc < 16,
+        perte >= 15 and temps <= 6,
+        ingesta < 10,
+        hypo == 'Oui'
+    )
+    criteres_mineurs = [
+        16 <= imc < 18.5,
+        perte >= 10 and temps <= 6,
+        ingesta < 50,
+        alcool == 'Oui'
+    ]
+
+    if any(criteres_majeurs):
+        return "Risque élevé (critère majeur détecté)"
+    elif sum(criteres_mineurs) >= 2:
+        return "Risque modéré (≥ 2 critères mineurs détectés)"
+    else:
+        return "Risque faible"
+
 
 ################# DONNEES #####################
 with st.form ('Données'):
@@ -102,32 +123,6 @@ if submitted :
             score_total += 1
 
      st.write(f"Score nutritionnel total ajusté à l'âge : **{score_total}**")
-     
-
-    # Détection du risque de SRI
-    def evaluer_sri(imc, perte, temps, ingesta, hypo, alcool):
-        criteres_majeurs = (
-            imc < 16,
-            perte >= 15 and temps <= 6,
-            ingesta < 10,
-            hypo == 'Oui'
-        )
-        criteres_mineurs = [
-            16 <= imc < 18.5,
-            perte >= 10 and temps <= 6,
-            ingesta < 50,
-            alcool == 'Oui'
-        ]
-
-        if any(criteres_majeurs):
-            return "Risque élevé (critère majeur détecté)"
-        elif sum(criteres_mineurs) >= 2:
-            return "Risque modéré (≥ 2 critères mineurs détectés)"
-        else:
-            return "Risque faible"
-
-    risque_sri = evaluer_sri(imc, perte, temps, ingesta, hypo, alcool)
-    st.write(f"Risque de SRI : **{risque_sri}**")
 
     # Calcul du risque SRI
      risque_sri = evaluer_sri(imc, perte, temps, ingesta, hypo, alcool)

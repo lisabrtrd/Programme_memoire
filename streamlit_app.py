@@ -1,5 +1,7 @@
 import streamlit as st
+pip install gspread
 import gspread
+pip install ouath2client
 from oauth2client.service_account import ServiceAccountCredentials
 
 # Autorisations d'accès à Google Sheets et Google Drive

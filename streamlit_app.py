@@ -2,13 +2,11 @@ import streamlit as st
 
 st.title('Besoin nutritionnel du patient🍏')
 
-
 def IMC(masse_actuelle, taille):
-    return round(masse_actuelle / taille**2)
+    return round(masse_actuelle / taille**2, 2)
 
 def perte_de_masse(masse_avant, masse_actuelle):
-    return round(((masse_avant - masse_actuelle) / masse_avant) * 100)
-
+    return round(((masse_avant - masse_actuelle) / masse_avant) * 100, 2)
 
 ################# DONNEES #####################
 with st.form('Données'):
@@ -21,12 +19,15 @@ with st.form('Données'):
     ingesta = st.slider('Quels sont les ingestas du patient sachant 100% = rien ne change de d habitude ?', min_value=0, max_value=100, value=100)
     stress_metabolique = st.selectbox(
         'Quels facteurs de stress métaboliques affectent le patient ?',
-        ('patient faible mais non allité ou maladie chronique avec complication', 'maladie active ou patient allité', 'patient de soins intensifs ou ventilation assistée'))
+        ('patient faible mais non allité ou maladie chronique avec complication', 
+         'maladie active ou patient allité', 
+         'patient de soins intensifs ou ventilation assistée'))
     alcool = st.radio('Le patient a-t-il des antécédents avec l’alcool ?', options=['Oui', 'Non'])
     hypo = st.radio('Le patient souffre-t-il d’hypophosphatémie, hypokaliémie ou hypomagnésémie ?', options=['Oui', 'Non'])
     type_patient = st.selectbox(
         'Le patient est ...',
-        ('hospitalisé', 'en oncologie médicale', 'âgé dénutris', 'en neurologie type SLA', 'en péri-opératoire', 'en réanimation phase aiguë', 'réanimation phase anabolique'))
+        ('hospitalisé', 'en oncologie médicale', 'âgé dénutris', 'en neurologie type SLA', 
+         'en péri-opératoire', 'en réanimation phase aiguë', 'réanimation phase anabolique'))
     
     submitted = st.form_submit_button('Soumettre')
 
@@ -58,54 +59,34 @@ if submitted:
 
     st.write(f"L'état de dénutrition du patient : **{etat_dénutrition}**")
 
-    # Score nutritionnel NRS
-    score_nut = []
-    if imc > 20.5:
-        score_nut.append(0)
-    elif 18.5 < imc < 20.5 and eg == 'Bon':
-        score_nut.append(1)
-    elif 18.5 < imc < 20.5 and eg == 'Mauvais':
-        score_nut.append(2)
-    elif imc < 18.5 and eg == 'Mauvais':
-        score_nut.append(3)
+    # Besoins énergétiques et protéiques selon type de patient
+    besoins = {
+        'hospitalisé': (20, 35),
+        'en oncologie médicale': (30, 35),
+        'âgés dénutris': (30, 40),
+        'en neurologie type SLA': (35, 35),
+        'en péri-opératoire': (25, 30),
+        'en réanimation phase aiguë': (20, 25),
+        'réanimation phase anabolique': (25, 30)
+    }
+    
+    besoins_proteines = {
+        'hospitalisé': (1.0, 2.0),
+        'en oncologie médicale': (1.2, 1.5),
+        'âgés dénutris': (1.2, 1.5),
+        'en neurologie type SLA': (1.5, 1.5),
+        'en péri-opératoire': (1.2, 1.5),
+        'en réanimation phase aiguë': (1.2, 1.5),
+        'réanimation phase anabolique': (2.0, 2.5) if imc >= 30 else (1.2, 1.5)
+    }
 
-    if perte == 0:
-        score_nut.append(0)
-    elif perte > 5 and 2 < temps <= 3:
-        score_nut.append(1)
-    elif perte > 5 and 1 < temps <= 2:
-        score_nut.append(2)
-    elif perte > 5 and 0 < temps <= 1:
-        score_nut.append(3)
+    bgk, bdk = besoins.get(type_patient, (20, 25))  # Besoins énergétiques
+    bgp_proteines, bdp_proteines = besoins_proteines.get(type_patient, (1.2, 1.5))  # Besoins en protéines
 
-    if ingesta > 75:
-        score_nut.append(0)
-    elif 50 < ingesta < 75:
-        score_nut.append(1)
-    elif 25 < ingesta < 50:
-        score_nut.append(2)
-    elif ingesta < 25:
-        score_nut.append(3)
+    # Calcul du facteur d'ingesta
+    facteur_ingesta = (1 - ingesta / 100)
 
-    score_nutritionnel = max(score_nut)
-
-    # Score de maladie
-    score_maladie = 0
-    if 'maladie chronique avec complication' in stress_metabolique:
-        score_maladie = 1
-    elif 'maladie active' in stress_metabolique or 'patient allité' in stress_metabolique:
-        score_maladie = 2
-    elif 'patient de soins intensifs' in stress_metabolique or 'ventilation assistée' in stress_metabolique:
-        score_maladie = 3
-
-    # Calcul du score total
-    score_total = score_nutritionnel + score_maladie
-    if age >= 70:
-        score_total += 1
-
-    st.write(f"Score nutritionnel total ajusté à l'âge : **{score_total}**")
-
-    # Détection du risque de SRI
+    # Évaluation du risque de SRI
     def sri(imc, perte, temps, ingesta, hypo, alcool):
         criteres_majeurs = (
             imc < 16,
@@ -130,39 +111,21 @@ if submitted:
         else:
             return 'Pas de risque de SRI'
 
-    # Calcul du risque SRI
     risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
-
-    # Définir les besoins nutritionnels avant le calcul des kcal
-    besoins = {
-        'hospitalisé': (20, 35),
-        'en oncologie médicale': (30, 35),
-        'âgés dénutris': (30, 40),
-        'en neurologie type SLA': (35, 35),
-        'en péri-opératoire': (25, 30),
-        'en réanimation phase aiguë': (20, 25),
-        'réanimation phase anabolique': (25, 30)}
-
-    bgk, bdk = besoins.get(type_patient, (20, 25))  # Utilisez une valeur par défaut si type_patient est inconnu
-
-    # Calcul du facteur d'ingesta
-    facteur_ingesta = (1 - ingesta / 100)
 
     if risque_sri != 'Pas de risque de SRI':  # N'affiche que si un risque est détecté
         st.write(f"Évaluation du risque de SRI : **{risque_sri}**")
         if risque_sri in ["Risque élevé (Critère majeur détecté)", "Risque élevé (≥ 2 critères mineurs détectés)"]:
-            kcal_min, kcal_max = 500, 500  # Restriction calorique à 500 kcal/j
-            bgp, bdp = None, None  # Pas de calcul pour les protéines pour le moment
             st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI.")
+            kcal_min, kcal_max = 500, 500
+            bgp, bdp = None, None
     else:
-        kcal_min = masse_actuelle * bgk * facteur_ingesta
-        kcal_max = masse_actuelle * bdk * facteur_ingesta
-        bgp = masse_actuelle * 1.2 * facteur_ingesta
-        bdp = masse_actuelle * 1.5 * facteur_ingesta
+        kcal_min = PA * bgk * facteur_ingesta
+        kcal_max = PA * bdk * facteur_ingesta
+        bgp = PA * bgp_proteines * facteur_ingesta
+        bdp = PA * bdp_proteines * facteur_ingesta
 
         st.write(f"Besoins caloriques minimum : **{round(kcal_min, 1)} kcal/j**")
         st.write(f"Besoins caloriques maximum : **{round(kcal_max, 1)} kcal/j**")
-        st.write(f"Besoins en protéines : **{round(bgp, 1)} g/j**")
-
-
-
+        st.write(f"Besoins en protéines minimum : **{round(bgp, 1)} g/j**")
+        st.write(f"Besoins en protéines maximum : **{round(bdp, 1)} g/j**")

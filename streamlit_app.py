@@ -9,30 +9,6 @@ def IMC(masse_actuelle, taille):
 def perte_de_masse(masse_avant, masse_actuelle):
     return round(((masse_avant - masse_actuelle) / masse_avant) * 100)
 
-def evaluer_sri(imc, perte, temps, ingesta, hypo, alcool):
-    criteres_majeurs = (
-        imc < 16,
-        perte >= 15 and temps <= 6,
-        ingesta < 10,
-        hypo == 'Oui'
-    )
-    criteres_mineurs = [
-        16 <= imc < 18.5,
-        perte >= 10 and temps <= 6,
-        ingesta < 50,
-        alcool == 'Oui'
-    ]
-
-    is_critere_majeur = any(criteres_majeurs)
-    nb_criteres_mineurs = sum(criteres_mineurs)
-
-    if is_critere_majeur:
-        return "Risque élevé"
-    elif nb_criteres_mineurs >= 2:
-        return "Risque élevé"
-    else:
-        return "Risque faible"
-
 
 ################# DONNEES #####################
 with st.form ('Données'):
@@ -67,16 +43,13 @@ if submitted :
     
     #etat de dénutrition#
      perte = perte_de_masse(masse_avant,masse_actuelle)
-     if perte >= 15 and temps <= 6:
-        etat_dénutrition = "dénutrition sévère"
-     elif perte >= 10 and temps <= 1:
-        etat_dénutrition = "dénutrition sévère"
-     elif perte >= 10 and temps > 1:
-        etat_dénutrition = "dénutrition modérée"
-     elif perte >= 5 and temps <= 1:
-        etat_dénutrition = "dénutrition modérée"
-     else:
-        etat_dénutrition = "patient normal"
+     etat_dénutrition = 'patient normal'
+     if perte >= 5 and temps < 1:
+            etat_dénutrition = "dénutrition modérée"
+     elif perte >= 10 and temps < 1:
+            etat_dénutrition = "dénutrition sévère"
+     elif perte >= 15 and temps < 6:
+            etat_dénutrition = "dénutrition sévère"
 
      st.write(f"L'état de dénutrition du patient : **{etat_dénutrition}**")
 
@@ -126,9 +99,36 @@ if submitted :
             score_total += 1
 
      st.write(f"Score nutritionnel total ajusté à l'âge : **{score_total}**")
+     
+
+    # Détection du risque de SRI
+     def sri(imc, perte, temps, ingesta, hypo, alcool):
+        criteres_majeurs = (
+            imc < 16,
+            perte >= 15 and 3 <= temps <= 6,
+            ingesta < 10,
+            hypo == 'Oui'
+        )
+        criteres_mineurs = [
+            16 <= imc < 18.5,
+            perte >= 10 and 3 <= temps <= 6 ,
+            ingesta = 0 and temps <= 0,17 ,
+            alcool == 'Oui'
+        ]
+
+        risque_crit_majeur = any(criteres_majeurs)
+        nb_criteres_mineurs = sum(criteres_mineurs)
+
+        if risque_crit_majeur:
+            return "Risque élevé (Critère majeur détecté)"
+        elif nb_criteres_mineurs >= 2:
+            return "Risque élevé (≥ 2 critères mineurs détectés)"
+        else:
+            return "Risque faible"
 
     # Calcul du risque SRI
-     risque_sri = evaluer_sri(imc, perte, temps, ingesta, hypo, alcool)
+     risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
+     st.write(f"Évaluation du risque de SRI : **{risque_sri}**")
 
     # Besoins nutritionnels
      besoins = {
@@ -144,7 +144,7 @@ if submitted :
      bgk, bdk = besoins[type_patient]
      facteur_ingesta = (1 - ingesta / 100)
 
-     if risque_sri == ["Risque élevé"]:
+     if risque_sri in ["Risque élevé (Critère majeur détecté)", "Risque élevé (≥ 2 critères mineurs détectés)"]:
         kcal_min, kcal_max = 500, 500  # Restriction calorique à 500 kcal/j
         bgp, bdp = None, None  # Pas de calcul pour les protéines pour le moment
         st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI.")

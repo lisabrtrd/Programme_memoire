@@ -106,8 +106,8 @@ if submitted:
     def sri(imc, perte, temps, ingesta, hypo, alcool):
         criteres_majeurs = (
             imc < 16,
-            perte >= 15 and 3 <= temps <= 6,
-            ingesta < 10,
+            perte >= 15 and temps <= 6 ,
+            ingesta < 10 and temps <= 0,33 ,
             hypo == 'Oui'
         )
         criteres_mineurs = [

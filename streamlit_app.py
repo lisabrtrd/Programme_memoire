@@ -44,14 +44,14 @@ if submitted:
     # état de dénutrition
     perte = perte_de_masse(masse_avant, masse_actuelle)
     etat_dénutrition = 'patient normal'
-    if perte >= 5 and temps <= 1:
-        etat_dénutrition = "dénutrition modérée"
+    if perte >= 15 and temps <= 6:
+        etat_dénutrition = "dénutrition sévère"
     elif perte >= 10 and temps <= 1:
         etat_dénutrition = "dénutrition sévère"
-    elif perte >= 10 and temps <= 6 :
+    elif perte >= 5 and temps <= 1 :
         etat_dénutrition = "dénutrition modérée"
-    elif perte >= 15 and temps <= 6:
-        etat_dénutrition = "dénutrition sévère"
+    elif perte >= 10 and temps <= 6:
+        etat_dénutrition = "dénutrition modérée"
 
     st.write(f"L'état de dénutrition du patient : **{etat_dénutrition}**")
 

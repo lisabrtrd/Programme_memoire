@@ -26,7 +26,7 @@ def evaluer_sri(imc, perte, temps, ingesta, hypo, alcool):
     if any(criteres_majeurs):
         return "Risque élevé (critère majeur détecté)"
     elif sum(criteres_mineurs) >= 2:
-        return "Risque modéré (≥ 2 critères mineurs détectés)"
+        return "Risque élevé (≥ 2 critères mineurs détectés)"
     else:
         return "Risque faible"
 
@@ -142,7 +142,7 @@ if submitted :
      bgk, bdk = besoins[type_patient]
      facteur_ingesta = (1 - ingesta / 100)
 
-     if risque_sri in ["Risque élevé (Critère majeur détecté)", "Risque modéré (≥ 2 critères mineurs détectés)"]:
+     if risque_sri in ["Risque élevé (Critère majeur détecté)", "Risque élevé (≥ 2 critères mineurs détectés)"]:
         kcal_min, kcal_max = 500, 500  # Restriction calorique à 500 kcal/j
         bgp, bdp = None, None  # Pas de calcul pour les protéines pour le moment
         st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI.")

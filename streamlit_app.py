@@ -30,6 +30,9 @@ def evaluer_sri(imc, perte, temps, ingesta, hypo, alcool):
     else:
         return "Risque faible"
 
+st.write("Critères majeurs:" , criteres_majeurs)
+st.write("Critères mineurs:" , criteres_mineurs)
+
 
 ################# DONNEES #####################
 with st.form ('Données'):
@@ -126,7 +129,7 @@ if submitted :
 
     # Calcul du risque SRI
      risque_sri = evaluer_sri(imc, perte, temps, ingesta, hypo, alcool)
-     st.write(f"Évaluation du risque de SRI : **{risque_sri}**")
+     st.write ( f"Évaluation du risque de SRI : **{risque_sri}**" )
 
     # Besoins nutritionnels
      besoins = {

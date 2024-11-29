@@ -13,13 +13,13 @@ def evaluer_sri(imc, perte, temps, ingesta, hypo, alcool):
     criteres_majeurs = (
         imc < 16,
         perte >= 15 and temps <= 6,
-        ingesta > 10,
+        ingesta < 10,
         hypo == 'Oui'
     )
     criteres_mineurs = [
         16 <= imc < 18.5,
         perte >= 10 and temps <= 6,
-        ingesta > 50,
+        ingesta < 50,
         alcool == 'Oui'
     ]
 
@@ -129,7 +129,6 @@ if submitted :
 
     # Calcul du risque SRI
      risque_sri = evaluer_sri(imc, perte, temps, ingesta, hypo, alcool)
-     st.write ( f"Évaluation du risque de SRI : **{risque_sri}**" )
 
     # Besoins nutritionnels
      besoins = {

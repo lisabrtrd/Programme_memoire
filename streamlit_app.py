@@ -48,7 +48,7 @@ if submitted:
         etat_dénutrition = "dénutrition sévère"
     elif perte >= 10 and temps <= 1:
         etat_dénutrition = "dénutrition sévère"
-    elif perte >= 10 and 1<= temps <= 6 :
+    if perte >= 10 and 1<= temps <= 6 :
         etat_dénutrition = "dénutrition modérée"
     elif perte >= 5 and temps <= 1:
         etat_dénutrition = "dénutrition modérée"

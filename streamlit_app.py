@@ -104,6 +104,13 @@ if submitted:
 
     # Détection du risque de SRI
     def sri(imc, perte, temps, ingesta, hypo, alcool):
+            st.write(f"Critères pour calculer le SRI :")
+            st.write(f"IMC : {imc}")
+            st.write(f"Perte de poids : {perte}%")
+            st.write(f"Temps écoulé : {temps} mois")
+            st.write(f"Ingesta : {ingesta}%")
+            st.write(f"Hypophosphatémie/Hypokaliémie/Hypomagnésémie : {hypo}")
+            st.write(f"Antécédents alcooliques : {alcool}")
         criteres_majeurs = (
             imc < 16,
             perte >= 15 and temps <= 6 ,
@@ -119,6 +126,8 @@ if submitted:
 
         risque_crit_majeur = any(criteres_majeurs)
         nb_criteres_mineurs = sum(criteres_mineurs)
+        st.write(f"Risque critère majeur détecté : {risque_crit_majeur}")
+        st.write(f"Nombre de critères mineurs détectés : {nb_criteres_mineurs}")
 
         if risque_crit_majeur:
             return "Risque élevé (Critère majeur détecté)"

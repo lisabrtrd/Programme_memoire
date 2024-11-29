@@ -112,7 +112,7 @@ if submitted :
         criteres_mineurs = [
             16 <= imc < 18.5,
             perte >= 10 and 3 <= temps <= 6 ,
-            ingesta = 0 and temps <= 0,17 ,
+            ingesta == 0 and temps <= 0,17 ,
             alcool == 'Oui'
         ]
 

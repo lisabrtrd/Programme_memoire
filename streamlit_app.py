@@ -2,13 +2,11 @@ import streamlit as st
 
 st.title('Besoin nutritionnel du patient🍏')
 
-
 def IMC(masse_actuelle, taille):
-    return round(masse_actuelle / taille**2)
+    return round(masse_actuelle / taille**2, 2)
 
 def perte_de_masse(masse_avant, masse_actuelle):
-    return round(((masse_avant - masse_actuelle) / masse_avant) * 100)
-
+    return round(((masse_avant - masse_actuelle) / masse_avant) * 100, 2)
 
 ################# DONNEES #####################
 with st.form('Données'):
@@ -21,12 +19,15 @@ with st.form('Données'):
     ingesta = st.slider('Quels sont les ingestas du patient sachant 100% = rien ne change de d habitude ?', min_value=0, max_value=100, value=100)
     stress_metabolique = st.selectbox(
         'Quels facteurs de stress métaboliques affectent le patient ?',
-        ('patient faible mais non allité ou maladie chronique avec complication', 'maladie active ou patient allité', 'patient de soins intensifs ou ventilation assistée'))
+        ('patient faible mais non allité ou maladie chronique avec complication', 
+         'maladie active ou patient allité', 
+         'patient de soins intensifs ou ventilation assistée'))
     alcool = st.radio('Le patient a-t-il des antécédents avec l’alcool ?', options=['Oui', 'Non'])
     hypo = st.radio('Le patient souffre-t-il d’hypophosphatémie, hypokaliémie ou hypomagnésémie ?', options=['Oui', 'Non'])
     type_patient = st.selectbox(
         'Le patient est ...',
-        ('hospitalisé', 'en oncologie médicale', 'âgé dénutris', 'en neurologie type SLA', 'en péri-opératoire', 'en réanimation phase aiguë', 'réanimation phase anabolique'))
+        ('hospitalisé', 'en oncologie médicale', 'âgé dénutris', 'en neurologie type SLA', 
+         'en péri-opératoire', 'en réanimation phase aiguë', 'réanimation phase anabolique'))
     
     submitted = st.form_submit_button('Soumettre')
 
@@ -35,12 +36,15 @@ if submitted:
     st.write('IMC du patient est de', IMC(masse_actuelle, taille))
     st.write('La perte de poids est de', perte_de_masse(masse_avant, masse_actuelle), '%')
     imc = IMC(masse_actuelle, taille)
+    
+    # Poids ajusté pour les besoins caloriques
     if imc >= 30:
         PCI = 25 * (taille ** 2)
         PA = PCI + 0.25 * (masse_actuelle - PCI)
-        masse_actuelle = PA
         st.write(f"Poids ajusté (PA) : **{round(PA, 1)} kg**")
-    
+    else:
+        PA = masse_actuelle
+
     # état de dénutrition
     perte = perte_de_masse(masse_avant, masse_actuelle)
     etat_dénutrition = 'patient normal'
@@ -48,14 +52,14 @@ if submitted:
         etat_dénutrition = "dénutrition sévère"
     elif perte >= 10 and temps <= 1:
         etat_dénutrition = "dénutrition sévère"
-    if perte >= 10 and 1<= temps <= 6 :
+    elif perte >= 10 and 1<= temps <= 6:
         etat_dénutrition = "dénutrition modérée"
     elif perte >= 5 and temps <= 1:
         etat_dénutrition = "dénutrition modérée"
 
     st.write(f"L'état de dénutrition du patient : **{etat_dénutrition}**")
 
-    # Score nutritionnel NRS
+        # Score nutritionnel NRS
     score_nut = []
     if imc > 20.5:
         score_nut.append(0)
@@ -102,20 +106,39 @@ if submitted:
 
     st.write(f"Score nutritionnel total ajusté à l'âge : **{score_total}**")
 
-    # Détection du risque de SRI
+    # Besoins énergétiques et protéiques selon type de patient
+    besoins = {
+        'hospitalisé': (20, 35),
+        'en oncologie médicale': (30, 35),
+        'âgés dénutris': (30, 40),
+        'en neurologie type SLA': (35, 35),
+        'en péri-opératoire': (25, 30),
+        'en réanimation phase aiguë': (20, 25),
+        'réanimation phase anabolique': (25, 30)
+    }
+    
+    besoins_proteines = {
+        'hospitalisé': (1.0, 2.0),
+        'en oncologie médicale': (1.2, 1.5),
+        'âgés dénutris': (1.2, 1.5),
+        'en neurologie type SLA': (1.5, 1.5),
+        'en péri-opératoire': (1.2, 1.5),
+        'en réanimation phase aiguë': (1.2, 1.5),
+        'réanimation phase anabolique': (2.0, 2.5) if imc >= 30 else (1.2, 1.5)
+    }
+
+    bgk, bdk = besoins.get(type_patient, (20, 25))  # Besoins énergétiques
+    bgp_proteines, bdp_proteines = besoins_proteines.get(type_patient, (1.2, 1.5))  # Besoins en protéines
+
+    # Calcul du facteur d'ingesta
+    facteur_ingesta = (1 - ingesta / 100)
+
+    # Évaluation du risque de SRI
     def sri(imc, perte, temps, ingesta, hypo, alcool):
-        st.write(f"Critères pour calculer le SRI :")
-        st.write(f"IMC : {imc}")
-        st.write(f"Perte de poids : {perte}%")
-        st.write(f"Temps écoulé : {temps} mois")
-        st.write(f"Ingesta : {ingesta}%")
-        st.write(f"Hypophosphatémie/Hypokaliémie/Hypomagnésémie : {hypo}")
-        st.write(f"Antécédents alcooliques : {alcool}")
-            
         criteres_majeurs = (
             imc < 16,
-            perte >= 15 and temps <= 6 ,
-            ingesta < 10 and temps <= 0,33 ,
+            perte >= 15 and temps <= 6,
+            ingesta < 10 and temps <= 0.33,
             hypo == 'Oui'
         )
         criteres_mineurs = [
@@ -127,8 +150,6 @@ if submitted:
 
         risque_crit_majeur = any(criteres_majeurs)
         nb_criteres_mineurs = sum(criteres_mineurs)
-        st.write(f"Risque critère majeur détecté : {risque_crit_majeur}")
-        st.write(f"Nombre de critères mineurs détectés : {nb_criteres_mineurs}")
 
         if risque_crit_majeur:
             return "Risque élevé (Critère majeur détecté)"
@@ -137,41 +158,22 @@ if submitted:
         else:
             return 'Pas de risque de SRI'
 
-    # Calcul du risque SRI
     risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
-# Définir les besoins nutritionnels avant le calcul des kcal
-    besoins = {
-        'hospitalisé': (20, 35),
-        'en oncologie médicale': (30, 35),
-        'âgés dénutris': (30, 40),
-        'en neurologie type SLA': (35, 35),
-        'en péri-opératoire': (25, 30),
-        'en réanimation phase aiguë': (20, 25),
-        'réanimation phase anabolique': (25, 30)}
-
-    bgk, bdk = besoins.get(type_patient, (20, 25))  # Utilisez une valeur par défaut si type_patient est inconnu
-
-# Calcul du facteur d'ingesta
-    facteur_ingesta = (1 - ingesta / 100)
 
     if risque_sri != 'Pas de risque de SRI':  # N'affiche que si un risque est détecté
         st.write(f"Évaluation du risque de SRI : **{risque_sri}**")
         if risque_sri in ["Risque élevé (Critère majeur détecté)", "Risque élevé (≥ 2 critères mineurs détectés)"]:
-            kcal_min, kcal_max = 500, 500  # Restriction calorique à 500 kcal/j
-            bgp, bdp = None, None  # Pas de calcul pour les protéines pour le moment
             st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI.")
+            kcal_min, kcal_max = 500, 500
+            bgp, bdp = None, None
     else:
-        kcal_min = masse_actuelle * bgk * facteur_ingesta
-        kcal_max = masse_actuelle * bdk * facteur_ingesta
-        bgp = masse_actuelle * 1.2 * facteur_ingesta
-        bdp = masse_actuelle * 1.5 * facteur_ingesta
+        kcal_min = PA * bgk * facteur_ingesta
+        kcal_max = PA * bdk * facteur_ingesta
+        bgp = PA * bgp_proteines * facteur_ingesta
+        bdp = PA * bdp_proteines * facteur_ingesta
 
-    st.write(f"Le patient doit consommer entre **{round(kcal_min)}** et **{round(kcal_max)}** kcal/j")
-
-    if bgp is not None and bdp is not None : 
-        st.write (f"et entre **{round(bgp, 1)}** et **{round(bdp, 1)}** g de protéines/j")
-    else :
-        st.write("Les besoins en protéines ne sont pas calculés en raison du risque élevé de SRI.")
+        st.write(f"Les besoins caloriques sont de **{round(kcal_min, 1)} kcal/j** à **{round(kcal_max, 1)} kcal/j**.")
+        st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")
 
 
 

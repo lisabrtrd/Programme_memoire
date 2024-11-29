@@ -104,13 +104,14 @@ if submitted:
 
     # Détection du risque de SRI
     def sri(imc, perte, temps, ingesta, hypo, alcool):
-            st.write(f"Critères pour calculer le SRI :")
-            st.write(f"IMC : {imc}")
-            st.write(f"Perte de poids : {perte}%")
-            st.write(f"Temps écoulé : {temps} mois")
-            st.write(f"Ingesta : {ingesta}%")
-            st.write(f"Hypophosphatémie/Hypokaliémie/Hypomagnésémie : {hypo}")
-            st.write(f"Antécédents alcooliques : {alcool}")
+        st.write(f"Critères pour calculer le SRI :")
+        st.write(f"IMC : {imc}")
+        st.write(f"Perte de poids : {perte}%")
+        st.write(f"Temps écoulé : {temps} mois")
+        st.write(f"Ingesta : {ingesta}%")
+        st.write(f"Hypophosphatémie/Hypokaliémie/Hypomagnésémie : {hypo}")
+        st.write(f"Antécédents alcooliques : {alcool}")
+            
         criteres_majeurs = (
             imc < 16,
             perte >= 15 and temps <= 6 ,

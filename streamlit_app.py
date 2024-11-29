@@ -105,29 +105,29 @@ if submitted :
      
 
     # Détection du risque de SRI
-     def evaluer_sri(imc, perte, temps, ingesta, hypo, alcool):
+    def evaluer_sri(imc, perte, temps, ingesta, hypo, alcool):
         criteres_majeurs = (
             imc < 16,
-            perte >= 15 and 3 <= temps <= 6,
+            perte >= 15 and temps <= 6,
             ingesta < 10,
             hypo == 'Oui'
         )
         criteres_mineurs = [
             16 <= imc < 18.5,
-            perte >= 10 and 3 <= temps <= 6,
+            perte >= 10 and temps <= 6,
             ingesta < 50,
             alcool == 'Oui'
         ]
 
-        risque_crit_majeur = any(criteres_majeurs)
-        nb_criteres_mineurs = sum(criteres_mineurs)
-
-        if risque_crit_majeur:
-            return "Risque élevé (Critère majeur détecté)"
-        elif nb_criteres_mineurs >= 2:
+        if any(criteres_majeurs):
+            return "Risque élevé (critère majeur détecté)"
+        elif sum(criteres_mineurs) >= 2:
             return "Risque modéré (≥ 2 critères mineurs détectés)"
         else:
             return "Risque faible"
+
+    risque_sri = evaluer_sri(imc, perte, temps, ingesta, hypo, alcool)
+    st.write(f"Risque de SRI : **{risque_sri}**")
 
     # Calcul du risque SRI
      risque_sri = evaluer_sri(imc, perte, temps, ingesta, hypo, alcool)

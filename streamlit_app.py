@@ -1,12 +1,11 @@
 import streamlit as st
-pip install gspread requirements.txt
 import gspread
-pip install ouath2client requirements.txt
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials  # Assurez-vous d'importer la classe Credentials
+from google.auth.transport.requests import Request
 
-# Autorisations d'accès à Google Sheets et Google Drive
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = {
+
+creds = Credentials.from_service_account_info({
   "type": "service_account",
   "project_id": "memoire-443220",
   "private_key_id": "167f4fcac86e9f822cf033f046b04d9fc361b0d9",
@@ -18,12 +17,14 @@ creds = {
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/lb-151%40memoire-443220.iam.gserviceaccount.com",
   "universe_domain": "googleapis.com"
-}
+}, scopes=scope)
+
+# Authentification via gspread
 client = gspread.authorize(creds)
 
-# Ouvrir la feuille Google Sheets (remplacez par le nom de votre fichier Google Sheets)
+# Ouvrir la feuille Google Sheets
 spreadsheet = client.open("Donnees_patients")  # Remplacez par le nom exact de votre Google Sheets
-worksheet = spreadsheet.get_worksheet(0)  # Accéder à la première feuille
+worksheet = spreadsheet.get_worksheet(0)
 
 # Interface utilisateur de Streamlit
 st.title('Saisie des données pour analyse nutritionnelle')
@@ -32,6 +33,7 @@ with st.form('Données'):
     # Entrée des données utilisateur
     masse_actuelle = st.number_input('Quel est le poids actuel du patient en kg ?', min_value=0.0, step=0.1)
     masse_avant = st.number_input('Quel était le poids à la dernière pesée du patient en kg ?', min_value=0.0, step=0.1)
+    temps = st.number_input('Quelle durée sépare les deux pesées en mois ?')
     taille = st.number_input('Quelle est la taille du patient en m ?', min_value=0.0, step=0.01)
     age = st.number_input('Quel âge a le patient ?', min_value=0, step=1)
     eg = st.radio('Quel est l’état général du patient ?', options=['Bon', 'Mauvais'], index=0)
@@ -55,6 +57,12 @@ with st.form('Données'):
 if submitted:
     # Calcul de l'IMC
     imc = round(masse_actuelle / taille ** 2, 2)
+    if imc >= 30:
+        PCI = 25 * (taille ** 2)
+        PA = PCI + 0.25 * (masse_actuelle - PCI)
+        st.write(f"Poids ajusté (PA) : **{round(PA, 1)} kg**")
+    else:
+        PA = masse_actuelle
 
     # Calcul de la perte de poids
     perte = round(((masse_avant - masse_actuelle) / masse_avant) * 100, 2)

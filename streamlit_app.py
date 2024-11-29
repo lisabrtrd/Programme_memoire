@@ -127,8 +127,8 @@ if submitted :
             return 'Pas de risque de SRI'
 
     # Calcul du risque SRI
-     risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
-     st.write(f"Évaluation du risque de SRI : **{risque_sri}**")
+    risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
+    st.write(f"Évaluation du risque de SRI : **{risque_sri}**")
 
     # Besoins nutritionnels
      besoins = {
@@ -146,12 +146,12 @@ if submitted :
 
     risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
 
-    if risque_sri:  # N'affiche que si un risque est détecté
+    if risque_sri != 'Pas de risque de SRI' :  # N'affiche que si un risque est détecté
         st.write(f"Évaluation du risque de SRI : **{risque_sri}**")
-    if risque_sri in ["Risque élevé (Critère majeur détecté)", "Risque élevé (≥ 2 critères mineurs détectés)"]:
-        kcal_min, kcal_max = 500, 500  # Restriction calorique à 500 kcal/j
-        bgp, bdp = None, None  # Pas de calcul pour les protéines pour le moment
-        st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI.")
+        if risque_sri in ["Risque élevé (Critère majeur détecté)", "Risque élevé (≥ 2 critères mineurs détectés)"]:
+            kcal_min, kcal_max = 500, 500  # Restriction calorique à 500 kcal/j
+            bgp, bdp = None, None  # Pas de calcul pour les protéines pour le moment
+            st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI.")
     else:
         kcal_min = masse_actuelle * bgk * facteur_ingesta
         kcal_max = masse_actuelle * bdk * facteur_ingesta

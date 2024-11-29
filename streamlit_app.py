@@ -23,9 +23,12 @@ def evaluer_sri(imc, perte, temps, ingesta, hypo, alcool):
         alcool == 'Oui'
     ]
 
-    if any(criteres_majeurs):
+    is_critere_majeur = any(criteres_majeurs)
+    nb_criteres_mineurs = sum(criteres_mineurs)
+
+    if is_critere_majeur:
         return "Risque élevé"
-    elif sum(criteres_mineurs) >= 2:
+    elif nb_criteres_mineurs >= 2:
         return "Risque élevé"
     else:
         return "Risque faible"

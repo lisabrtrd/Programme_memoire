@@ -158,5 +158,11 @@ if submitted:
         kcal_min = masse_actuelle * bgk * facteur_ingesta
         kcal_max = masse_actuelle * bdk * facteur_ingesta
         bgp = masse_actuelle * 1.2 * facteur_ingesta
+        bdp = masse_actuelle * 1.5 * facteur_ingesta
+
+        st.write(f"Besoins caloriques minimum : **{round(kcal_min, 1)} kcal/j**")
+        st.write(f"Besoins caloriques maximum : **{round(kcal_max, 1)} kcal/j**")
+        st.write(f"Besoins en protéines : **{round(bgp, 1)} g/j**")
+
 
 

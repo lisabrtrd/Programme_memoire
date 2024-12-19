@@ -174,7 +174,7 @@ if submitted:
 
         st.write(f"Les besoins caloriques sont de **{round(kcal_min, 1)} kcal/j** à **{round(kcal_max, 1)} kcal/j**.")
         st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")
-        st.warning ("Ne pas dépasser les 600kcal/j ! Si c'est le cas, pensez à orienter le patient vers un nutritionniste et peut-être commencer à amener l'idée de la nutrition entérale selon le problème du patient")
+        st.warning ("Ne pas dépasser les 600kcal/j de CNO ! Si c'est le cas, pensez à orienter le patient vers un nutritionniste et peut-être commencer à amener l'idée de la nutrition entérale selon le problème du patient")
 
 
 

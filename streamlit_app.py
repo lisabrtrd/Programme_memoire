@@ -11,7 +11,7 @@ def perte_de_masse(masse_avant, masse_actuelle):
 ################# DONNEES #####################
 with st.form('Données'):
     masse_actuelle = st.number_input('Quel est le poids actuel du patient en kg ?')
-    masse_avant = st.number_input('Quel était le poids à la dernière pesée du patient en kg ?')
+    masse_avant = st.number_input('Quel était le poids habituel du patient en kg ?')
     temps = st.number_input('Quelle durée sépare les deux pesées en mois ?')
     taille = st.number_input('Quelle est la taille du patient en m ?')
     eg = st.radio('Quel est l’état général du patient ?', options=['Bon', 'Mauvais'], index=0)

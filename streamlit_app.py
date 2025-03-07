@@ -24,6 +24,9 @@ with st.form('Données'):
          'patient de soins intensifs ou ventilation assistée'))
     alcool = st.radio('Le patient a-t-il des antécédents avec l’alcool ?', options=['Oui', 'Non'])
     hypo = st.radio('Le patient souffre-t-il d’hypophosphatémie, hypokaliémie ou hypomagnésémie ?', options=['Oui', 'Non'])
+    info = "permet de savoir si le patient est à risque de présenter un syndrome de renutrition inapropriée"
+    if input("Voir plus d'infos ? (o/n) ") == "o":
+    print(info)
     type_patient = st.selectbox(
         'Le patient est ...',
         ('hospitalisé', 'en oncologie médicale', 'âgé dénutris', 'en neurologie type SLA', 

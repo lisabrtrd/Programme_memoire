@@ -24,7 +24,7 @@ with st.form('Données'):
          'patient de soins intensifs ou ventilation assistée'))
     alcool = st.radio('Le patient a-t-il des antécédents avec l’alcool ?', options=['Oui', 'Non'])
     hypo = st.radio('Le patient souffre-t-il d’hypophosphatémie, hypokaliémie ou hypomagnésémie ?', options=['Oui', 'Non'])
-    with st.expander("ℹ️ En savoir plus sur le risque de SRI"):
+    with st.expander("ℹ️ En savoir plus sur le risque de syndrome de renutrition inapropriée"):
         st.write("Le syndrome de renutrition inappropriée (SRI) survient lorsqu’un patient dénutri ou ayant subi un jeûne prolongé reçoit un apport trop rapide et excessif en calories et micronutriments. Ce syndrome peut être fatal en raison des déséquilibres électrolytiques qu’il provoque, pouvant conduire à une défaillance multiviscérale. Il est donc essentiel de le détecter précocement. Les principales manifestations cliniques du SRI incluent : hypertension artérielle, œdèmes, insuffisance cardiaque transitoire, ainsi que d'autres complications métaboliques graves.")
     type_patient = st.selectbox(
         'Le patient est ...',
@@ -168,6 +168,8 @@ if submitted:
             st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI.")
             kcal_min, kcal_max = 500, 500
             bgp, bdp = None, None
+            with st.expander("ℹ️ En savoir plus sur le risque de syndrome de renutrition inapropriée"):
+                st.write("Le syndrome de renutrition inappropriée (SRI) survient lorsqu’un patient dénutri ou ayant subi un jeûne prolongé reçoit un apport trop rapide et excessif en calories et micronutriments. Ce syndrome peut être fatal en raison des déséquilibres électrolytiques qu’il provoque, pouvant conduire à une défaillance multiviscérale. Il est donc essentiel de le détecter précocement. Les principales manifestations cliniques du SRI incluent : hypertension artérielle, œdèmes, insuffisance cardiaque transitoire, ainsi que d'autres complications métaboliques graves.")
     else:
         kcal_min = PA * bgk * facteur_ingesta
         kcal_max = PA * bdk * facteur_ingesta

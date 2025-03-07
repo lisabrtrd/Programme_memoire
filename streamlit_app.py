@@ -16,7 +16,7 @@ with st.form('Données'):
     taille = st.number_input('Quelle est la taille du patient en m ?')
     eg = st.radio('Quel est l’état général du patient ?', options=['Bon', 'Mauvais'], index=0)
     age = st.number_input('Quel âge a le patient ?')
-    ingesta = st.slider('Quels sont les ingestas du patient sachant 100% = rien ne change de d habitude ?', min_value=0, max_value=100, value=100)
+    ingesta = st.slider('Quels sont les prises alimentaires actuelles du patient sachant 100% = rien ne change de d habitude ?', min_value=0, max_value=100, value=100)
     stress_metabolique = st.selectbox(
         'Quels facteurs de stress métaboliques affectent le patient ?',
         ('patient faible mais non allité ou maladie chronique avec complication', 

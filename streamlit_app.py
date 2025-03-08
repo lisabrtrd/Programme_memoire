@@ -29,7 +29,7 @@ with st.form('Données'):
         ('hospitalisé', 'en oncologie médicale', 'âgé dénutris', 'en neurologie type SLA', 
          'en péri-opératoire', 'en réanimation phase aiguë', 'réanimation phase anabolique'))
 
-submitted = st.form_submit_button('Soumettre')
+    submitted = st.form_submit_button('Soumettre')
 
 ############## calcul de base ###########################
 if submitted:

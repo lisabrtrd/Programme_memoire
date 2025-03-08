@@ -198,7 +198,7 @@ resultats = marque[np.isin(marque, selection_array)]
 if selection :
     filtered_df = produits_df [['Calories', 'Protéines'] + selection]
     st.write("Résultats sélectionnés :", resultats)
-    st.dataframe(filtered_df, hide_index = true)
+    st.dataframe(filtered_df, hide_index = True)
 else :
     st.warning("Veuillez sélectionner au moins une marque.")
 

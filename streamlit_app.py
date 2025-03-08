@@ -184,8 +184,9 @@ if "kcal_min" in locals() and "kcal_max" in locals() and "bgp" in locals() and "
     st.warning("Ne pas dépasser les 600 kcal/j de CNO ! Si c'est le cas, pensez à orienter le patient vers un nutritionniste et peut-être commencer à amener l'idée de la nutrition entérale selon le problème du patient")
 
 # Affichage des produits possibles 
+selection_array = np.array(selection)
+resultats = marques[np.isin(marques, selection_array)]
 if selection :
-    selection_array = np.array(selection)
     st.write("Résultats sélectionnés :", resultats)
 
 else :

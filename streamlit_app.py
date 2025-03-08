@@ -29,7 +29,7 @@ with st.form('Données'):
         ('hospitalisé', 'en oncologie médicale', 'âgé dénutris', 'en neurologie type SLA', 
          'en péri-opératoire', 'en réanimation phase aiguë', 'réanimation phase anabolique'))
     marque = ["Fortimel", "Fresubin", "Delical", "Clinutren"]
-    selection = st.multiselect("Sélectionnez une ou plusieurs marques :", marque)
+    selection = st.multiselect("Sélectionnez la ou les marques dont vous disposez :", marque)
 
     submitted = st.form_submit_button('Soumettre')
 

@@ -206,8 +206,7 @@ produits_data = {
     "Delical®": ["HCPH Edulcorée", "HCPH Concentrée", "HCPH Lactée", "", "", "", "Saveurs fruitées édulcorée", "HCPH Concentrée", "", ""],
     "Clinutren®": ["Dessert gourmand 125g", "", "Boisson 2kcal", "Concentré fruity", "", "Dessert 2kcal 125g", "", "", "Fruit", "Renutryl booster"]}
 produits_df = pd.DataFrame (produits_data)
-selection_array = np.array(selection)
-resultats = marque[np.isin(marque, selection_array)]
+selection = [marque for marque in selection if marque in produits_df.columns]
 if selection :
     filtered_df = produits_df [['Calories', 'Protéines'] + selection]
     st.dataframe(filtered_df, hide_index = True)

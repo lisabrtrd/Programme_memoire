@@ -174,29 +174,35 @@ if submitted:
         bgp = PA * bgp_proteines * facteur_ingesta
         bdp = PA * bdp_proteines * facteur_ingesta
 
-    data = {
-        "Marque": ["Fortimel", "Fortimel", "Fresubin", "Fresubin", "Delical", "Delical", "Clinutren", "Clinutren"],
-        "Produit": [
-            "Fortimel Compact Protein", "Fortimel Jucy",
-            "Fresubin PRO Drink", "Fresubin Energy Drink",
-            "Delical HPHC Concentré", "Delical Saveurs Fruitées",
-            "Clinutren Boisson 2kcal", "Clinutren Dessert 2kcal"],
-        "Contenance": ["125 ml", "200 ml", "125 ml", "200 ml", "200 ml", "200 ml", "200 ml", "125 g"],
-        "Kcal": [300, 300, 400, 300, 452, 260, 400, 250],
-        "Protéines (g)": [18, 8, 20, 12, 29, 8, 20, 12.5]}
-    df = pd.DataFrame(data)
     st.title("Sélection des Compléments Nutritionnels Oraux (CNO)")
-    marques_autorisees = ["Fortimel", "Fresubin", "Delical", "Clinutren"]
-    marques_selectionnees = st.multiselect("Sélectionnez les marques disponibles :", options=marques_autorisees)
 
-    if marques_selectionnees:
-        resultats = df[df["Marque"].isin(marques_selectionnees)]
-        st.write("Produits correspondants :")
-        st.dataframe(resultats, hide_index=True)
-    else:
-        st.write("Veuillez sélectionner au moins une marque.")
+# Base de données des CNO (Fortimel, Fresubin, Delical, Clinutren)
+data = {
+    "Marque": ["Fortimel", "Fortimel", "Fresubin", "Fresubin", "Delical", "Delical", "Clinutren", "Clinutren"],
+    "Produit": [
+        "Fortimel Compact Protein", "Fortimel Jucy",
+        "Fresubin PRO Drink", "Fresubin Energy Drink",
+        "Delical HPHC Concentré", "Delical Saveurs Fruitées",
+        "Clinutren Boisson 2kcal", "Clinutren Dessert 2kcal"],
+    "Contenance": ["125 ml", "200 ml", "125 ml", "200 ml", "200 ml", "200 ml", "200 ml", "125 g"],
+    "Kcal": [300, 300, 400, 300, 452, 260, 400, 250],
+    "Protéines (g)": [18, 8, 20, 12, 29, 8, 20, 12.5]}
+
+df = pd.DataFrame(data)  # Création du DataFrame
+
+# Sélection des marques disponibles (uniquement celles spécifiées)
+marques_autorisees = ["Fortimel", "Fresubin", "Delical", "Clinutren"]
+marques_selectionnees = st.multiselect("Sélectionnez les marques disponibles :", options=marques_autorisees)
+
+# Affichage des résultats selon les marques sélectionnées
+if marques_selectionnees:
+    resultats = df[df["Marque"].isin(marques_selectionnees)]
+    st.write("Produits correspondants :")
+    st.dataframe(resultats, hide_index=True)
+else:
+    st.write("Veuillez sélectionner au moins une marque.")
         
-        submitted = st.form_submit_button('Soumettre')
+submitted = st.form_submit_button('Soumettre')
 
         st.write(f"Les besoins caloriques sont de **{round(kcal_min, 1)} kcal/j** à **{round(kcal_max, 1)} kcal/j**.")
         st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")

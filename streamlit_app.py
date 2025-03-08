@@ -194,19 +194,22 @@ df = pd.DataFrame(data)  # Création du DataFrame
 marques_autorisees = ["Fortimel", "Fresubin", "Delical", "Clinutren"]
 marques_selectionnees = st.multiselect("Sélectionnez les marques disponibles :", options=marques_autorisees)
 
-# Affichage des résultats selon les marques sélectionnées
+# Vérifie que toutes les valeurs nécessaires existent avant de les utiliser
 if marques_selectionnees:
     resultats = df[df["Marque"].isin(marques_selectionnees)]
     st.write("Produits correspondants :")
     st.dataframe(resultats, hide_index=True)
 else:
     st.write("Veuillez sélectionner au moins une marque.")
-        
-submitted = st.form_submit_button('Soumettre')
 
-        st.write(f"Les besoins caloriques sont de **{round(kcal_min, 1)} kcal/j** à **{round(kcal_max, 1)} kcal/j**.")
-        st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")
-        st.warning ("Ne pas dépasser les 600kcal/j de CNO ! Si c'est le cas, pensez à orienter le patient vers un nutritionniste et peut-être commencer à amener l'idée de la nutrition entérale selon le problème du patient")
+# Ajout de la vérification avant de calculer les besoins caloriques
+if "kcal_min" in locals() and "kcal_max" in locals() and "bgp" in locals() and "bdp" in locals():
+    st.write(f"Les besoins caloriques sont de **{round(kcal_min, 1)} kcal/j** à **{round(kcal_max, 1)} kcal/j**.")
+    st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")
+    
+    # Avertissement si dépassement de 600 kcal/j de CNO
+    st.warning("Ne pas dépasser les 600 kcal/j de CNO ! Si c'est le cas, pensez à orienter le patient vers un nutritionniste et peut-être commencer à amener l'idée de la nutrition entérale selon le problème du patient")
+
 
 
 

@@ -191,7 +191,7 @@ produits_data = {
     "Fresubin": ["PRO compact drink 125ml", "PRO drink", "2kcal drink", "energy drink", "Plant-based drink", "2kcal compact drink 125ml", "", "", "jucy drink", ""],
     "Delical": ["HCPH Edulcorée", "HCPH Concentrée", "HCPH Lactée", "", "", "", "Saveurs fruitées édulcorée", "HCPH Concentrée", "", ""],
     "Clinutren": ["dessert gourmand 125g", "", "boisson 2kcal", "concentré fruity", "", "dessert 2kcal 125g", "", "", "fruit", "renutryl booster"]}
-produits_df = pd.Dataframe (produits_data)
+produits_df = pd.DataFrame (produits_data)
 selection_array = np.array(selection)
 resultats = marque[np.isin(marque, selection_array)]
 if selection :

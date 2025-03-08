@@ -185,7 +185,7 @@ if "kcal_min" in locals() and "kcal_max" in locals() and "bgp" in locals() and "
 
 # Affichage des produits possibles 
 selection_array = np.array(selection)
-resultats = marques[np.isin(marques, selection_array)]
+resultats = marque[np.isin(marque, selection_array)]
 if selection :
     st.write("Résultats sélectionnés :", resultats)
 

@@ -165,7 +165,7 @@ if submitted:
     risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
 
     if risque_sri != 'Pas de risque de SRI':  # N'affiche que si un risque est détecté
-        st.write(f"Évaluation du risque de SRI : **{risque_sri}**")
+        st.write("Évaluation du risque de SRI : **{risque_sri}**")
         if risque_sri in ["Risque élevé (Critère majeur détecté)", "Risque élevé (≥ 2 critères mineurs détectés)"]:
             st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI. Renvoyer vers un professionnel")
             kcal_min, kcal_max = 500, 500

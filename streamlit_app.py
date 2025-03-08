@@ -184,7 +184,7 @@ if "kcal_min" in locals() and "kcal_max" in locals() and "bgp" in locals() and "
 
 # Affichage des produits possibles 
 if selction :
-    resultats = df[df["Marque"].isin(selection_marque)]
+    resultats = df[df["Marque"].isin(selection)]
     st.write("Produits correspondants :")
     st.dataframe(resultats, hide_index=True)  # Affichage du tableau
 else:

@@ -30,8 +30,12 @@ with st.form('Données'):
         'Le patient est ...',
         ('hospitalisé', 'en oncologie médicale', 'âgé dénutris', 'en neurologie type SLA', 
          'en péri-opératoire', 'en réanimation phase aiguë', 'réanimation phase anabolique'))
-    marque = np.array(["Fortimel®", "Fresubin®", "Delical®", "Clinutren®"])
-    selection = st.multiselect("Sélectionnez la ou les marques dont vous disposez :", marque)
+    marque = (["Fortimel®", "Fresubin®", "Delical®", "Clinutren®"])
+    selection = []
+    st.write("Sélectionnez les marques dont vous disposez :")
+    for marque in marque :
+        if st.checkbox (marque):
+            selection.append(marque)
 
     submitted = st.form_submit_button('Soumettre')
 

@@ -28,6 +28,8 @@ with st.form('Données'):
         'Le patient est ...',
         ('hospitalisé', 'en oncologie médicale', 'âgé dénutris', 'en neurologie type SLA', 
          'en péri-opératoire', 'en réanimation phase aiguë', 'réanimation phase anabolique'))
+    marque = ["Fortimel", "Fresubin", "Delical", "Clinutren"]
+    selection = st.multiselect("Sélectionnez une ou plusieurs marques :", marques)
 
     submitted = st.form_submit_button('Soumettre')
 
@@ -174,40 +176,12 @@ if submitted:
         bgp = PA * bgp_proteines * facteur_ingesta
         bdp = PA * bdp_proteines * facteur_ingesta
 
-    st.title("Sélection des Compléments Nutritionnels Oraux (CNO)")
-
-# Base de données des CNO (Fortimel, Fresubin, Delical, Clinutren)
-data = {
-    "Marque": ["Fortimel", "Fortimel", "Fresubin", "Fresubin", "Delical", "Delical", "Clinutren", "Clinutren"],
-    "Produit": [
-        "Fortimel Compact Protein", "Fortimel Jucy",
-        "Fresubin PRO Drink", "Fresubin Energy Drink",
-        "Delical HPHC Concentré", "Delical Saveurs Fruitées",
-        "Clinutren Boisson 2kcal", "Clinutren Dessert 2kcal"],
-    "Contenance": ["125 ml", "200 ml", "125 ml", "200 ml", "200 ml", "200 ml", "200 ml", "125 g"],
-    "Kcal": [300, 300, 400, 300, 452, 260, 400, 250],
-    "Protéines (g)": [18, 8, 20, 12, 29, 8, 20, 12.5]}
-
-df = pd.DataFrame(data)  # Création du DataFrame
-
-# Sélection des marques disponibles (uniquement celles spécifiées)
-marques_autorisees = ["Fortimel", "Fresubin", "Delical", "Clinutren"]
-marques_selectionnees = st.multiselect("Sélectionnez les marques disponibles :", options=marques_autorisees)
-
-# Vérifie que toutes les valeurs nécessaires existent avant de les utiliser
-if marques_selectionnees:
-    resultats = df[df["Marque"].isin(marques_selectionnees)]
-    st.write("Produits correspondants :")
-    st.dataframe(resultats, hide_index=True)
-else:
-    st.write("Veuillez sélectionner au moins une marque.")
-
-# Ajout de la vérification avant de calculer les besoins caloriques
+# Besoins caloriques
 if "kcal_min" in locals() and "kcal_max" in locals() and "bgp" in locals() and "bdp" in locals():
     st.write(f"Les besoins caloriques sont de **{round(kcal_min, 1)} kcal/j** à **{round(kcal_max, 1)} kcal/j**.")
     st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")
     
-    # Avertissement si dépassement de 600 kcal/j de CNO
+
     st.warning("Ne pas dépasser les 600 kcal/j de CNO ! Si c'est le cas, pensez à orienter le patient vers un nutritionniste et peut-être commencer à amener l'idée de la nutrition entérale selon le problème du patient")
 
 

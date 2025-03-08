@@ -28,6 +28,35 @@ with st.form('Données'):
         'Le patient est ...',
         ('hospitalisé', 'en oncologie médicale', 'âgé dénutris', 'en neurologie type SLA', 
          'en péri-opératoire', 'en réanimation phase aiguë', 'réanimation phase anabolique'))
+    data = {
+    "Marque": ["Fortimel", "Fortimel", "Fresubin", "Fresubin", "Delical", "Delical", "Clinutren", "Clinutren"],
+    "Produit": [
+        "Fortimel Compact Protein", "Fortimel Jucy",
+        "Fresubin PRO Drink", "Fresubin Energy Drink",
+        "Delical HPHC Concentré", "Delical Saveurs Fruitées",
+        "Clinutren Boisson 2kcal", "Clinutren Dessert 2kcal"
+    ],
+    "Contenance": ["125 ml", "200 ml", "125 ml", "200 ml", "200 ml", "200 ml", "200 ml", "125 g"],
+    "Kcal": [300, 300, 400, 300, 452, 260, 400, 250],
+    "Protéines (g)": [18, 8, 20, 12, 29, 8, 20, 12.5]
+}
+
+df = pd.DataFrame(data)
+
+# Interface utilisateur
+st.title("Sélection des Compléments Nutritionnels Oraux (CNO)")
+
+# Sélection des marques (seulement Fortimel, Delical, Fresubin, Clinutren)
+marques_autorisees = ["Fortimel", "Fresubin", "Delical", "Clinutren"]
+marques_selectionnees = st.multiselect("Sélectionnez les marques disponibles :", options=marques_autorisees)
+
+# Filtrer et afficher les résultats
+if marques_selectionnees:
+    resultats = df[df["Marque"].isin(marques_selectionnees)]
+    st.write("Produits correspondants :")
+    st.dataframe(resultats, hide_index=True)
+else:
+    st.write("Veuillez sélectionner au moins une marque.")
     
     submitted = st.form_submit_button('Soumettre')
 

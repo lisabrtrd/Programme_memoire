@@ -180,9 +180,15 @@ if submitted:
 if "kcal_min" in locals() and "kcal_max" in locals() and "bgp" in locals() and "bdp" in locals():
     st.write(f"Les besoins caloriques sont de **{round(kcal_min, 1)} kcal/j** à **{round(kcal_max, 1)} kcal/j**.")
     st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")
-    
-
     st.warning("Ne pas dépasser les 600 kcal/j de CNO ! Si c'est le cas, pensez à orienter le patient vers un nutritionniste et peut-être commencer à amener l'idée de la nutrition entérale selon le problème du patient")
+
+# Affichage des produits possibles 
+if marques_selectionnees:
+    resultats = df[df["Marque"].isin(selection_marque)]
+    st.write("Produits correspondants :")
+    st.dataframe(resultats, hide_index=True)  # Affichage du tableau
+else:
+    st.write("Veuillez sélectionner au moins une marque.")
 
 
 

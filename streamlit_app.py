@@ -1,4 +1,5 @@
 import streamlit as st
+import numpy as np
 
 st.title('Besoin nutritionnel du patient🍏')
 
@@ -28,7 +29,7 @@ with st.form('Données'):
         'Le patient est ...',
         ('hospitalisé', 'en oncologie médicale', 'âgé dénutris', 'en neurologie type SLA', 
          'en péri-opératoire', 'en réanimation phase aiguë', 'réanimation phase anabolique'))
-    marque = ["Fortimel", "Fresubin", "Delical", "Clinutren"]
+    marque = np.array(["Fortimel", "Fresubin", "Delical", "Clinutren"])
     selection = st.multiselect("Sélectionnez la ou les marques dont vous disposez :", marque)
 
     submitted = st.form_submit_button('Soumettre')
@@ -184,11 +185,11 @@ if "kcal_min" in locals() and "kcal_max" in locals() and "bgp" in locals() and "
 
 # Affichage des produits possibles 
 if selection :
-    resultats = df[df["Marque"].isin(selection)]
-    st.write("Produits correspondants :")
-    st.dataframe(resultats, hide_index=True)  # Affichage du tableau
-else:
-    st.write("Veuillez sélectionner au moins une marque.")
+    selection_array = np.array(selection)
+    st.write("Résultats sélectionnés :", resultats)
+
+else :
+    st.warning("Veuillez sélectionner au moins une marque.")
 
 
 

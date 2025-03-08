@@ -188,10 +188,10 @@ if "kcal_min" in locals() and "kcal_max" in locals() and "bgp" in locals() and "
 produits_data = {
     "Calories": [300, 490, 400, 300, 300, 250, 260, 452, 300, 600],
     "Protéines": [18, 29, 20.2, 12, 15, 12.5, 8, 29, 8, 30],
-    "Fortimel": ["Compact Protein 2kcal 125 ml", "Protein 2.4 kcal", "Extra 2", "Compact 2.4 kcal 125 ml", "", "Crème", "", "", "", ""],
-    "Fresubin": ["PRO compact drink 125ml", "PRO drink", "2kcal drink", "Energy drink", "Plant-based drink", "2kcal compact drink 125ml", "", "", "Jucy drink", ""],
-    "Delical": ["HCPH Edulcorée", "HCPH Concentrée", "HCPH Lactée", "", "", "", "Saveurs fruitées édulcorée", "HCPH Concentrée", "", ""],
-    "Clinutren": ["Dessert gourmand 125g", "", "Boisson 2kcal", "Concentré fruity", "", "Dessert 2kcal 125g", "", "", "Fruit", "Renutryl booster"]}
+    "Fortimel®": ["Compact Protein 2kcal 125 ml", "Protein 2.4 kcal", "Extra 2", "Compact 2.4 kcal 125 ml", "", "Crème", "", "", "", ""],
+    "Fresubin®": ["PRO compact drink 125ml", "PRO drink", "2kcal drink", "Energy drink", "Plant-based drink", "2kcal compact drink 125ml", "", "", "Jucy drink", ""],
+    "Delical®": ["HCPH Edulcorée", "HCPH Concentrée", "HCPH Lactée", "", "", "", "Saveurs fruitées édulcorée", "HCPH Concentrée", "", ""],
+    "Clinutren®": ["Dessert gourmand 125g", "", "Boisson 2kcal", "Concentré fruity", "", "Dessert 2kcal 125g", "", "", "Fruit", "Renutryl booster"]}
 produits_df = pd.DataFrame (produits_data)
 selection_array = np.array(selection)
 resultats = marque[np.isin(marque, selection_array)]

@@ -167,6 +167,7 @@ if submitted:
             return 'Pas de risque de SRI'
 
     risque_sri = sri(imc, perte, temps, ingesta, hypo, alcool)
+    kcal_min, kcal_max, bgp, bdp = None, None, None, None
 
     if risque_sri != 'Pas de risque de SRI':  # N'affiche que si un risque est détecté
         st.write(f"Évaluation du risque de SRI : **{risque_sri}**")

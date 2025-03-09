@@ -191,8 +191,6 @@ if kcal_min is not None and kcal_max is not None:
         st.warning("⚠️ Veuillez entrer toutes les données pour calculer les besoins caloriques.")
     if bgp is not None and bdp is not None:
         st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")
-    else:
-        st.write("Les apports caloriques ne peuvent pas dépasser les 500kcal/j, renvoyer à un spécialiste")
     else: 
         st.write(f"Les besoins caloriques sont de **{round(kcal_min, 1)} kcal/j** à **{round(kcal_max, 1)} kcal/j**.")
         st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")

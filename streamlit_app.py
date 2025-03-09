@@ -184,9 +184,10 @@ if submitted:
         bdp = PA * bdp_proteines * facteur_ingesta
 
 # Besoins caloriques
-if kcal_min is not None and kcal_max is not None :
+if kcal_min is not None and kcal_max is not None:
     st.write(f"Les besoins caloriques sont de **{round(kcal_min, 1)} kcal/j** à **{round(kcal_max, 1)} kcal/j**.")
-    print(bgp, bdp)
+else:
+    st.warning("⚠️ Veuillez entrer toutes les données pour calculer les besoins caloriques.")
     if bgp is not None and bdp is not None:
         st.write(f"Les besoins en protéines sont de **{round(bgp, 1)} g/j** à **{round(bdp, 1)} g/j**.")
     else:

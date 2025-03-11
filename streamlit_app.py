@@ -172,9 +172,9 @@ if submitted:
     if risque_sri != 'Pas de risque de SRI':  # N'affiche que si un risque est détecté
         st.write(f"Évaluation du risque de SRI : **{risque_sri}**")
         if risque_sri in ["Risque élevé (Critère majeur détecté)", "Risque élevé (≥ 2 critères mineurs détectés)"]:
-        st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI.")
-        kcal_min, kcal_max = 500, 500  
-        bgp, bdp = None, None  
+            st.warning("Restriction calorique appliquée à 500 kcal/j en raison du risque de SRI.")
+            kcal_min, kcal_max = 500, 500  
+            bgp, bdp = None, None  
         # Affichage d'un message d'information sur le SRI
         with st.expander("ℹ️ En savoir plus sur le SRI"):
             st.write("Le syndrome de renutrition inappropriée (SRI) survient lorsqu’un patient dénutri ou ayant subi un jeûne prolongé reçoit un apport trop rapide et excessif en calories et micronutriments. Ce syndrome peut être fatal en raison des déséquilibres électrolytiques qu’il provoque, pouvant conduire à une défaillance multiviscérale. Il est donc essentiel de le détecter précocement. Les principales manifestations cliniques du SRI incluent : hypertension artérielle, œdèmes, insuffisance cardiaque transitoire, ainsi que d'autres complications métaboliques graves.")

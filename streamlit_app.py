@@ -16,7 +16,7 @@ with st.form('Données'):
     masse_avant = st.number_input('Quel était le poids habituel du patient en kg ?')
     temps = st.number_input('Quelle durée sépare les deux pesées en mois ?')
     taille = st.number_input('Quelle est la taille du patient en m ?')
-    eg = st.radio('Quel est l’état général du patient ?', options=['Bon', 'Mauvais'], index=0)
+    eg = st.radio('Le patient présente-t-il une diminution de son état général ?', options=['Non', 'Oui'], index=0)
     age = st.number_input('Quel âge a le patient ?')
     ingesta = st.slider('Quels sont les prises alimentaires actuelles du patient sachant 100% = rien ne change de d habitude ?', min_value=0, max_value=100, value=100)
     stress_metabolique = st.selectbox(
@@ -71,11 +71,11 @@ if submitted:
     score_nut = []
     if imc > 20.5:
         score_nut.append(0)
-    elif 18.5 < imc < 20.5 and eg == 'Bon':
+    elif 18.5 < imc < 20.5 and eg == 'Non':
         score_nut.append(1)
-    elif 18.5 < imc < 20.5 and eg == 'Mauvais':
+    elif 18.5 < imc < 20.5 and eg == 'Oui':
         score_nut.append(2)
-    elif imc < 18.5 and eg == 'Mauvais':
+    elif imc < 18.5 and eg == 'Oui':
         score_nut.append(3)
 
     if perte == 0:

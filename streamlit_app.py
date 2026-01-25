@@ -45,13 +45,7 @@ if submitted:
     st.write('La perte de poids est de', perte_de_masse(masse_avant, masse_actuelle), '%')
     imc = IMC(masse_actuelle, taille)
     
-    # Poids ajusté pour les besoins caloriques
-    if imc >= 30:
-        PCI = 25 * (taille ** 2)
-        PA = PCI + 0.25 * (masse_actuelle - PCI)
-        st.write(f"Poids ajusté (PA) : **{round(PA, 1)} kg**")
-    else:
-        PA = masse_actuelle
+  
 
     # état de dénutrition
     perte = perte_de_masse(masse_avant, masse_actuelle)

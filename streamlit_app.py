@@ -44,8 +44,7 @@ if submitted:
     st.write('IMC du patient est de', IMC(masse_actuelle, taille))
     st.write('La perte de poids est de', perte_de_masse(masse_avant, masse_actuelle), '%')
     imc = IMC(masse_actuelle, taille)
-    
- PA = masse_actuelle 
+
 
     # état de dénutrition
     perte = perte_de_masse(masse_avant, masse_actuelle)
@@ -173,10 +172,10 @@ if submitted:
         with st.expander("ℹ️ En savoir plus sur le SRI"):
             st.write("Le syndrome de renutrition inappropriée (SRI) survient lorsqu’un patient dénutri ou ayant subi un jeûne prolongé reçoit un apport trop rapide et excessif en calories et micronutriments. Ce syndrome peut être fatal en raison des déséquilibres électrolytiques qu’il provoque, pouvant conduire à une défaillance multiviscérale. Il est donc essentiel de le détecter précocement. Les principales manifestations cliniques du SRI incluent : hypertension artérielle, œdèmes, insuffisance cardiaque transitoire, ainsi que d'autres complications métaboliques graves.")
     else:
-        kcal_min = PA * bgk * facteur_ingesta
-        kcal_max = PA * bdk * facteur_ingesta
-        bgp = PA * bgp_proteines * facteur_ingesta
-        bdp = PA * bdp_proteines * facteur_ingesta
+        kcal_min = masse_actuelle * bgk * facteur_ingesta
+        kcal_max = masse_actuelle * bdk * facteur_ingesta
+        bgp = masse_actuelle * bgp_proteines * facteur_ingesta
+        bdp = masse_actuelle * bdp_proteines * facteur_ingesta
 
 # Besoins caloriques
 if kcal_min is not None and kcal_max is not None:

@@ -128,7 +128,7 @@ if submitted:
         'réanimation phase anabolique': (2.0, 2.5) if imc >= 30 else (1.2, 1.5)
     }
 
-    bgk, bdk = besoins.get(type_patient, (20, 25))  # Besoins énergétiques
+    bgk, bdk = besoins.get(type_patient)  # Besoins énergétiques
     bgp_proteines, bdp_proteines = besoins_proteines.get(type_patient, (1.2, 1.5))  # Besoins en protéines
 
     # Calcul du facteur d'ingesta

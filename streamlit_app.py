@@ -45,7 +45,7 @@ if submitted:
     st.write('La perte de poids est de', perte_de_masse(masse_avant, masse_actuelle), '%')
     imc = IMC(masse_actuelle, taille)
     
-  
+ PA = masse_actuelle 
 
     # état de dénutrition
     perte = perte_de_masse(masse_avant, masse_actuelle)

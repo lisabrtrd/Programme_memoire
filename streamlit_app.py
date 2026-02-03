@@ -94,7 +94,7 @@ if submitted:
     score_nutritionnel = max(score_nut)
 
     if age >= 70:
-    score_nutritionnel += 1
+        score_nutritionnel += 1
 
     st.write("Consultation diététique recommandée") if score_nutritionnel >= 3 else None
 

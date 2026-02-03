@@ -96,7 +96,7 @@ if submitted:
     if age >= 70:
     score_nutritionnel += 1
 
-    write 'consultation diététique recommandée' = score_nutritionnel >= 3
+    write 'consultation diététique recommandée' if score_nutritionnel >= 3
 
     # Score de maladie
     score_maladie = 0

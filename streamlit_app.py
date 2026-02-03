@@ -77,6 +77,8 @@ if submitted:
         score_nut.append(1)
     elif perte > 5 and 1 < temps <= 2:
         score_nut.append(2)
+    elif perte > 15 and temps < 3
+        score_nut.append(3)
     elif perte > 5 and 0 < temps <= 1:
         score_nut.append(3)
 

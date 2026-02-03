@@ -75,15 +75,15 @@ if submitted:
 
     # Score de maladie
     score_maladie = 0
-    if 'maladie chronique avec complication' in stress_metabolique:
-        score_maladie = 1
-    elif 'maladie active' in stress_metabolique or 'patient allité' in stress_metabolique:
-        score_maladie = 2
-    elif 'patient de soins intensifs' in stress_metabolique or 'ventilation assistée' in stress_metabolique:
-        score_maladie = 3
+    if stress_metabolique == 'maladie chronique avec complication' :
+        score_maladie.append(1)
+    elif stress_metaboliqu == 'maladie active ou patient allité' :
+        score_maladie.append(2)
+    elif stress_metabolique == 'patient de soins intensifs ou ventilation assistée' :
+        score_maladie.append(3)
 
     # Calcul du score total
-    score_total = score_nutritionnel + score_maladie
+    score_total = score_nut + score_maladie
     if age >= 70:
         score_total += 1
 

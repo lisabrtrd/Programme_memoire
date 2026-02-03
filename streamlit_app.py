@@ -81,6 +81,8 @@ if submitted:
         score_maladie.append(2)
     elif stress_metabolique == 'patient de soins intensifs ou ventilation assistée' :
         score_maladie.append(3)
+    else:
+    score_maladie = 0
 
     score_mld = max(score_maladie)
 

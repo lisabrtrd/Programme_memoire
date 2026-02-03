@@ -77,7 +77,7 @@ if submitted:
     score_maladie = 0
     if stress_metabolique == 'maladie chronique avec complication' :
         score_maladie.append(1)
-    elif stress_metaboliqu == 'maladie active ou patient allité' :
+    elif stress_metabolique == 'maladie active ou patient allité' :
         score_maladie.append(2)
     elif stress_metabolique == 'patient de soins intensifs ou ventilation assistée' :
         score_maladie.append(3)

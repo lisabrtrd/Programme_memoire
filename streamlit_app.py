@@ -91,7 +91,7 @@ if submitted:
     elif ingesta < 25:
         score_nut.append(3)
 
-    if âge > 69
+    if âge > 69:
         score_nut.append(1)
 
     score_nutritionnel = max(score_nut)

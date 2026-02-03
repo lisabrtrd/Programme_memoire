@@ -62,41 +62,16 @@ if submitted:
 
         # Score nutritionnel NRS
     score_nut = []
-    if imc > 20.5:
+    if imc > 20.5 or perte == 0 or ingesta > 75:
         score_nut.append(0)
-    elif 18.5 < imc < 20.5 and eg == 'Non':
+    elif (18.5 < imc < 20.5 and eg == 'Non') or (perte > 5 and temps <=3) or 50 < ingesta < 75:
         score_nut.append(1)
-    elif 18.5 < imc < 20.5 and eg == 'Oui':
+    elif (18.5 < imc < 20.5 and eg == 'Oui') or (perte > 5 and temps <= 2) or 25 < ingesta < 50 :
         score_nut.append(2)
-    elif imc < 18.5 and eg == 'Oui':
-        score_nut.append(3)
-
-    if perte == 0:
-        score_nut.append(0)
-    elif perte > 5 and temps <= 3:
-        score_nut.append(1)
-    elif perte > 5 and temps <= 2:
-        score_nut.append(2)
-    elif perte > 15 and temps < 3:
-        score_nut.append(3)
-    elif perte > 5 and temps <= 1:
-        score_nut.append(3)
-
-    if ingesta > 75:
-        score_nut.append(0)
-    elif 50 < ingesta < 75:
-        score_nut.append(1)
-    elif 25 < ingesta < 50:
-        score_nut.append(2)
-    elif ingesta < 25:
+    elif (imc < 18.5 and eg == 'Oui') or (perte > 15 and temps < 3) or (perte > 5 and temps <= 1) or ingesta < 25 :
         score_nut.append(3)
 
     score_nutritionnel = max(score_nut)
-
-    if age >= 70:
-        score_nutritionnel += 1
-
-    st.write("Consultation diététique recommandée") if score_nutritionnel >= 3 else None
 
     # Score de maladie
     score_maladie = 0
@@ -113,6 +88,7 @@ if submitted:
         score_total += 1
 
     st.write(f"Score nutritionnel total ajusté à l'âge : **{score_total}**")
+    st.write("Consultation diététique recommandée") if score_nutritionnel >= 3 else st.write("Pas de consultation diététique nécessaire")
 
     # Besoins énergétiques et protéiques selon type de patient
     besoins = {

@@ -74,17 +74,13 @@ if submitted:
     score_nutritionnel = max(score_nut)
 
     # Score de maladie
-    score_maladie = []
-    if stress_metabolique == 'maladie chronique avec complication' :
-        score_maladie.append(1)
-    elif stress_metabolique == 'maladie active ou patient allité' :
-        score_maladie.append(2)
-    elif stress_metabolique == 'patient de soins intensifs ou ventilation assistée' :
-        score_maladie.append(3)
-    else :
-        score_maladie = 0
-
-    score_mld = max(score_maladie)
+    score_mld = 0  # valeur par défaut
+    if stress_metabolique == 'maladie chronique avec complication':
+        score_mld = 1
+    elif stress_metabolique == 'maladie active ou patient allité':
+        score_mld = 2
+    elif stress_metabolique == 'patient de soins intensifs ou ventilation assistée':
+        score_mld = 3
 
     # Calcul du score total
     score_total = score_nutritionnel + score_mld

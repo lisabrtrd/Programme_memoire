@@ -82,8 +82,10 @@ if submitted:
     elif stress_metabolique == 'patient de soins intensifs ou ventilation assistée' :
         score_maladie.append(3)
 
+    score_mld = max(score_maladie)
+
     # Calcul du score total
-    score_total = score_nut + score_maladie
+    score_total = score_nutritionnel + score_mld
     if age >= 70:
         score_total += 1
 

@@ -61,17 +61,42 @@ if submitted:
     st.write(f"L'état de dénutrition du patient : **{etat_dénutrition}**")
 
         # Score nutritionnel NRS
-    score_nut = []
-    if imc > 20.5 or perte == 0 or ingesta > 75:
-        score_nut.append(0)
-    elif (18.5 < imc < 20.5 and eg == 'Non') or (perte > 5 and temps <=3) or 50 < ingesta < 75:
-        score_nut.append(1)
-    elif (18.5 < imc < 20.5 and eg == 'Oui') or (perte > 5 and temps <= 2) or 25 < ingesta < 50 :
-        score_nut.append(2)
-    elif (imc < 18.5 and eg == 'Oui') or (perte > 15 and temps < 3) or (perte > 5 and temps <= 1) or ingesta < 25 :
-        score_nut.append(3)
+    if imc > 20.5:
+        score_imc = 0
+    elif 18.5 < imc <= 20.5 and eg == 'Non':
+        score_imc = 1
+    elif 18.5 < imc <= 20.5 and eg == 'Oui':
+        score_imc = 2
+    elif imc <= 18.5 and eg == 'Oui':
+        score_imc = 3
+    else:
+        score_imc = 2  # IMC <=18.5 et eg='Non'
 
-    score_nutritionnel = max(score_nut)
+        # Perte de poids
+    if perte == 0:
+        score_perte = 0
+    elif perte > 15 and temps < 3:
+        score_perte = 3
+    elif perte > 5 and temps <= 1:
+        score_perte = 3
+    elif perte > 5 and temps <= 2:
+        score_perte = 2
+    elif perte > 5 and temps <= 3:
+        score_perte = 1
+    else:
+        score_perte = 0
+
+        # Ingesta
+    if ingesta > 75:
+        score_ingesta = 0
+    elif 50 < ingesta <= 75:
+        score_ingesta = 1
+    elif 25 < ingesta <= 50:
+        score_ingesta = 2
+    else:
+        score_ingesta = 3
+
+    score_nutritionnel = max(score_imc, score_perte, score_ingesta)
 
     # Score de maladie
     score_mld = 0  # valeur par défaut
